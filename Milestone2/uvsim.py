@@ -18,7 +18,8 @@ class UVSim:
 
     def execute(self):
 
-        while self.instruction_pointer < len(self.memory):
+        running = True
+        while self.instruction_pointer < len(self.memory) and running:
             instruction = self.memory[self.instruction_pointer]
             opcode = instruction // 100
             operand = instruction % 100
@@ -26,8 +27,10 @@ class UVSim:
             #Read, Write and Load instructions (Alan)
             if opcode == 10: 
                 self.read(operand)
+
             elif opcode == 11: 
                 self.write(operand)
+
             elif opcode == 20: 
                  self.load(operand)
 
@@ -41,10 +44,16 @@ class UVSim:
                 
             if opcode == 40:
                 self.branch(operand)
+
             elif opcode == 41:
                 self.branchneg(operand)
+
             elif opcode == 42:
                 self.branchzero(operand)
+            
+            elif opcode == 43:
+                print("Program Halted.")
+                self.halt()
             
             # POINTER SHOULD BE INCREASED HERE I THINK
             self.instruction_pointer += 1
@@ -88,6 +97,6 @@ class UVSim:
             self.instruction_pointer = address - 1
 
     def halt(self):
-        print("Program Halted.")
+        raise SystemExit
 
     

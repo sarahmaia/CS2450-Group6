@@ -23,11 +23,11 @@ class UVSim:
             opcode = instruction // 100
             operand = instruction % 100
             #Read, Write and Load instructions (Alan)
-            if opcode = 10: 
+            if opcode == 10: 
                 self.read(operand)
-            elif opcode = 11: 
+            elif opcode == 11: 
                 self.write(operand)
-            elif opcode = 20: 
+            elif opcode == 20: 
                  self.load(operand)
                 
             if opcode == 40:

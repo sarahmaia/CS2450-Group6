@@ -17,7 +17,7 @@ class UVSim:
 
 
     def execute(self):
-        
+
         running = True
         while self.instruction_pointer < len(self.memory) and running:
             instruction = self.memory[self.instruction_pointer]
@@ -87,10 +87,6 @@ class UVSim:
         if self.accumulator < 0:
             self.instruction_pointer = address - 1
 
-<<<<<<< HEAD
-=======
-
->>>>>>> c15d572 (Some of the tests)
     def halt(self):
         raise SystemExit
 

@@ -22,7 +22,14 @@ class UVSim:
             instruction = self.memory[self.instruction_pointer]
             opcode = instruction // 100
             operand = instruction % 100
-
+            #Read, Write and Load instructions (Alan)
+            if opcode = 10: 
+                self.read(operand)
+            elif opcode = 11: 
+                self.write(operand)
+            elif opcode = 20: 
+                 self.load(operand)
+                
             if opcode == 40:
                 self.branch(operand)
             elif opcode == 41:
@@ -31,7 +38,18 @@ class UVSim:
                 self.branchzero(operand)
             
             # POINTER SHOULD BE INCREASED HERE I THINK
+            self.instruction_pointer += 1
 
+
+    #Methods for Read, Write, and Load
+    def read(self, address):
+        self.memory[address] = int(input("Enter a number: "))
+
+    def write(self, address):
+        print(self.memory.get(address,0))
+
+    def load(self, address): 
+        self.accumulator = self.memory.get(address,0)
 
     def branchzero(self, address):
         if self.accumulator == 0:

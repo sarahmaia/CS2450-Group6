@@ -69,6 +69,15 @@ class UVSim:
     def subtract(self, address):
         self.accumulator -= self.memory.get(address,0)
         
+    # Divide, multiply, and branch (Sarah)
+    def divide(self, address):
+        self.accumulator *= self.memory.get(address,0)
+
+    def multiply(self, address):
+        self.accumulator /= self.memory.get(address, 0)
+
+    def branch(self, address): 
+        self.instruction_pointer = address - 1
 
     def branchzero(self, address):
         if self.accumulator == 0:

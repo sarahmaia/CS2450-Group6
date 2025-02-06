@@ -12,8 +12,10 @@ class UVSim:
                     self.memory[index] = int(line.strip())
         except FileNotFoundError:
             print("Error: File not found.")
+            raise FileNotFoundError("File not found.")
         except ValueError:
             print("Error: Invalid instruction format.")
+            raise ValueError("Invalid instruction format.")
 
 
     def execute(self):

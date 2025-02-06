@@ -54,6 +54,7 @@ class UVSim:
             elif opcode == 43:
                 print("Program Halted.")
                 self.halt()
+                return
             
             # POINTER SHOULD BE INCREASED HERE I THINK
             self.instruction_pointer += 1
@@ -91,12 +92,15 @@ class UVSim:
     def branchzero(self, address):
         if self.accumulator == 0:
             self.instruction_pointer = address - 1
+        return
 
     def branchneg(self, address):
         if self.accumulator < 0:
             self.instruction_pointer = address - 1
+        return
 
     def halt(self):
         raise SystemExit
+        return
 
     

@@ -92,10 +92,17 @@ class UVSim:
         
     # Divide, multiply, and branch (Sarah)
     def divide(self, address):
-        self.accumulator *= self.memory.get(address,0)
-
+        if address not in self.memory:
+            raise KeyError("Error: Address not found in memory")
+        if self.memory[address] == 0:
+            print("Error: Division by zero.")
+            raise SystemExit
+        self.accumulator //= self.memory[address]  
+        
     def multiply(self, address):
-        self.accumulator /= self.memory.get(address, 0)
+        if address not in self.memory:
+            raise KeyError("Error: Address not found in memory")
+        self.accumulator *= self.memory[address]
 
     def branch(self, address): 
         self.instruction_pointer = address - 1

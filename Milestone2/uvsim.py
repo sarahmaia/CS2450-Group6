@@ -98,7 +98,7 @@ class UVSim:
             print("Error: Division by zero.")
             raise SystemExit
         self.accumulator //= self.memory[address]  
-        
+
     def multiply(self, address):
         if address not in self.memory:
             raise KeyError("Error: Address not found in memory")
@@ -115,7 +115,6 @@ class UVSim:
     def branchneg(self, address):
         if self.accumulator < 0:
             self.instruction_pointer = address - 1
-        return
 
     def halt(self):
         raise SystemExit

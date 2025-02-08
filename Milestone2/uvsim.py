@@ -68,18 +68,27 @@ class UVSim:
     def write(self, address):
         print(self.memory.get(address,0))
 
-    def load(self, address): 
-        self.accumulator = self.memory.get(address,0)
+    def load(self, address):
+        if address in self.memory:
+            self.accumulator = self.memory[address]
+        else:
+            raise KeyError("Error: Address not found in memory")
         
     #Methods for Store, Add, and Subtract (Jalal)
     def store(self, address):
         self.memory[address] = self.accumulator
 
     def add(self, address):
-        self.accumulator += self.memory.get(address,0)
+        if address in self.memory:
+            self.accumulator += self.memory[address]
+        else:
+            raise KeyError("Error: Address not found in memory")
 
     def subtract(self, address):
-        self.accumulator -= self.memory.get(address,0)
+        if address in self.memory:
+            self.accumulator -= self.memory[address]
+        else:
+            raise KeyError("Error: Address not found in memory")
         
     # Divide, multiply, and branch (Sarah)
     def divide(self, address):

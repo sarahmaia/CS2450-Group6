@@ -1,0 +1,36 @@
+Milestone 3
+==========
+
+Welcome to the documentation for **Milestone 3**!
+
+Contents:
+---------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Table of Contents
+
+   installation
+   usage
+   modules
+
+Getting Started
+---------------
+
+To install the project, run:
+
+.. code-block:: bash
+
+   pip install my_project
+
+About
+-----
+
+This project helps you do amazing things!
+
+Indices and tables
+------------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

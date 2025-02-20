@@ -5,7 +5,6 @@ A simulator where computer science students can execute their BasicML programs, 
 
 ## Clone the repository
 To clone the repository, use the following command:
-```bash
 git clone https://github.com/sarahmaia/CS2450-Group6.git
 
 ## Installation

@@ -43,24 +43,20 @@ Ensure Python is installed:
 
 
 If Python is not installed, install it using the following commands based on your distribution:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Debian/Ubuntu:
-""""""""""""""
 
 .. code-block:: bash
 
    sudo apt update && sudo apt install python3
 
 Fedora:
-"""""""
 
 .. code-block:: bash
 
    sudo dnf install python3
 
 Arch Linux:
-"""""""""""
 
 .. code-block:: bash
 

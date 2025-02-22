@@ -1,6 +1,3 @@
-.. Group Project documentation master file, created by
-   sphinx-quickstart.
-
 ====================================================
 (Milestone3) Documentation
 ====================================================
@@ -10,10 +7,11 @@ Welcome to the documentation for our **Group Project**, a project designed to he
 Contents:
 ---------
 
-- `Introduction <introduction.rst>`_
-- `Installation <installation.rst>`_
-- `Usage <usage.rst>`_
-- `Testing <testing.rst>`_
+- Introduction
+- Installation
+- Usage
+- Testing
+- Contributors
 
 ------------
 Introduction
@@ -35,19 +33,6 @@ To run the simulator, navigate to the project root directory and execute:
    python3 -m src.Milestone3.gui.gui
 
 See 'README.md' for more details.
-
------------------------
-Project Organization
------------------------
-The project is structured as follows:
-
-- **src/**: Contains the main source code.
-  - `Milestone3/`: The core package for the simulator.
-  - `gui/`: The graphical user interface module.
-  - `uvsim.py`: The simulator logic.
-  - `main.py`: The entry point for command-line execution.
-- **tests/**: Contains unit tests.
-- **docs/**: Documentation files, including this `index.rst`.
 
 ---------------
 Testing

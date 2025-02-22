@@ -6,9 +6,8 @@ A simulator where computer science students can execute their BasicML programs, 
 ## Clone the repository
 To clone the repository, use the following command:
 
-.. code-block:: bash
-
-   git clone https://github.com/sarahmaia/CS2450-Group6.git
+```bash
+git clone https://github.com/sarahmaia/CS2450-Group6.git
 
 ## Installation
 To install the project, ensure Python is installed and required dependencies are available. 
@@ -18,15 +17,13 @@ See [Installation](docs/installation.rst) for more details.
 ## Usage
 Navigate to the root project directory:
 
-.. code-block:: bash
-
-   cd GroupProject
+```bash
+cd GroupProject
 
 Run the program:
 
-.. code-block:: bash
-
-   python3 -m src.Milestone3.gui.gui
+```bash
+python3 -m src.Milestone3.gui.gui
 
 Once the GUI is open, click the "Load Program" button.
 

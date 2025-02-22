@@ -8,39 +8,9 @@ To clone the repository, use the following command:
 git clone https://github.com/sarahmaia/CS2450-Group6.git
 
 ## Installation
-### macOS:
+To install the project, ensure Python is installed and required dependencies are available. 
 
-Ensure Python is installed: python3 --version
-
-If Python is not installed, install it using Homebrew: brew install python
-
-### Windows:
-
-Ensure Python is installed: python --version
-
-If Python is not installed, install it via Windows Package Manager: winget install Python.Python
-
-### Linux:
-
-Ensure Python is installed: python3 --version
-
-#### If Python is not installed, install it using the following commands based on your distribution:
-
-Debian/Ubuntu: sudo apt update && sudo apt install python3
-
-Fedora: sudo dnf install python3
-
-Arch Linux: sudo pacman -S python
-
-### Ensure unittest is available:
-
-python -m unittest --help
-
-### Ensure tkinter is available:
-
-python -c "import tkinter; print('tkinter is available')"
-
-If available, you should see: tkinter is available
+See [Installation](docs/installation.rst) for more details.
 
 ## Usage
 Navigate to the root project directory: cd GroupProject

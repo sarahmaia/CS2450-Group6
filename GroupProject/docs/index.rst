@@ -8,7 +8,7 @@ Contents:
 ---------
 
 - Introduction
-- Installation
+- `Installation <installation.rst>`_
 - Usage
 - Testing
 - Contributors
@@ -21,7 +21,7 @@ The BasicML Program Simulator provides a graphical interface to load and run Bas
 ---------------
 Installation
 ---------------
-To install the project, ensure Python is installed and required dependencies are available.
+To install the project, ensure Python is installed and required dependencies are available. See :doc:`installation` for more details.
 
 ---------
 Usage

@@ -8,6 +8,7 @@ To clone the repository, use the following command:
 
 ```bash
 git clone https://github.com/sarahmaia/CS2450-Group6.git
+```
 
 ## Installation
 To install the project, ensure Python is installed and required dependencies are available. 
@@ -19,11 +20,13 @@ Navigate to the root project directory:
 
 ```bash
 cd GroupProject
+```
 
 Run the program:
 
 ```bash
 python3 -m src.Milestone3.gui.gui
+```
 
 Once the GUI is open, click the "Load Program" button.
 

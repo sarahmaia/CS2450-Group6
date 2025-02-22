@@ -7,14 +7,13 @@
 
 Welcome to the documentation for our **Group Project**, a project designed to help computer science students execute BasicML programs.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+Contents:
+---------
 
-   introduction
-   installation
-   usage
-   testing
+- `Introduction <introduction.rst>`_
+- `Installation <installation.rst>`_
+- `Usage <usage.rst>`_
+- `Testing <testing.rst>`_
 
 ------------
 Introduction
@@ -24,7 +23,7 @@ The BasicML Program Simulator provides a graphical interface to load and run Bas
 ---------------
 Installation
 ---------------
-To install the project, ensure Python is installed and required dependencies are available. See :doc:`installation` for more details.
+To install the project, ensure Python is installed and required dependencies are available.
 
 ---------
 Usage
@@ -34,6 +33,8 @@ To run the simulator, navigate to the project root directory and execute:
 .. code-block:: bash
 
    python3 -m src.Milestone3.gui.gui
+
+See 'README.md' for more details.
 
 -----------------------
 Project Organization

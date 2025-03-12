@@ -1,12 +1,12 @@
 import unittest
 from unittest.mock import MagicMock
-from Milestone2.uvsim import UVSim
+from src.Milestone3.uvsim import UVSim
 
 class TestUVSim(unittest.TestCase):
     
     def setUp(self):
         self.memory = {}
-        self.uvsim = UVSim(self.memory)
+        self.uvsim = UVSim()
 
     def test_load_valid_program(self):
         self.uvsim.memory[0] = 2005
@@ -18,33 +18,28 @@ class TestUVSim(unittest.TestCase):
 
     def test_execute_halt(self):
         self.uvsim.memory[0] = 4300
-        with self.assertRaises(SystemExit):
-            self.uvsim.execute()
-
-
+        result = self.uvsim.execute()
+        self.assertEqual(result, ("halt", None))
 
     # Read input
     def test_read_valid_input(self):
-        with unittest.mock.patch("builtins.input", return_value="42"):
-            self.uvsim.read(10)
+        self.uvsim.read_input(10, 42)
         self.assertEqual(self.uvsim.memory[10], 42)
 
     def test_read_invalid_input(self):
-        with unittest.mock.patch("builtins.input", return_value="abc"):
-            with self.assertRaises(ValueError):
-                self.uvsim.read(10)
+        with self.assertRaises(ValueError):
+            self.uvsim.read_input(10, "abc")
 
 
     # Write output
     def test_write_output(self):
         self.uvsim.memory[10] = 99
-        with unittest.mock.patch("builtins.print") as mock_print:
-            self.uvsim.write(10)
-            mock_print.assert_called_with(99)
+        output = self.uvsim.write_output(10)
+        self.assertEqual(output, 99)
 
     def test_write_uninitialized_memory(self):
         with unittest.mock.patch("builtins.print") as mock_print:
-            self.uvsim.write(99)
+            self.uvsim.write_output(99)
             mock_print.assert_called_with(0)
 
     # 05. Load Value
@@ -144,8 +139,8 @@ class TestUVSim(unittest.TestCase):
 
     # 14. Halt
     def test_halt_execution(self):
-        with self.assertRaises(SystemExit):
-            self.uvsim.halt()
+        result = self.uvsim.execute()
+        self.assertEqual(result, None)
 
 
 if __name__ == "__main__":

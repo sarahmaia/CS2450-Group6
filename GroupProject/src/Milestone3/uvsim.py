@@ -59,19 +59,22 @@ class UVSim:
         return self.memory.get(address, 0)
 
     def load(self, address):
-        if address in self.memory:
-            self.accumulator = self.memory[address]
+        if address not in self.memory:
+            raise KeyError(f"Error: Address {address} not found in memory")
+        self.accumulator = self.memory[address]
 
     def store(self, address):
         self.memory[address] = self.accumulator
 
     def add(self, address):
-        if address in self.memory:
-            self.accumulator += self.memory[address]
+        if address not in self.memory:
+            raise KeyError(f"Error: Address {address} not found in memory")
+        self.accumulator += self.memory[address]
 
     def subtract(self, address):
-        if address in self.memory:
-            self.accumulator -= self.memory[address]
+        if address not in self.memory:
+            raise KeyError(f"Error: Address {address} not found in memory") 
+        self.accumulator -= self.memory[address]
 
     def divide(self, address):
         if address not in self.memory:

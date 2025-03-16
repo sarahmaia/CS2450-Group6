@@ -34,8 +34,21 @@ Navigate to and select a file with BasicML.
 
 Click "Run" to execute the program and follow the on-screen instructions.
 
+## Tests
+Navigate to the root project directory:
+
+```bash
+cd GroupProject
+```
+
+Execute the unit tests:
+
+```bash
+python3 -m tests.testUVSim
+```
+
 ## Credits
 Sarah Maia, Alan Hernandez, Jalal Khan, Santos Laprida
 
 ## Additional Notes
-This is the second prototype of the project, which includes the graphical user interface (GUI) with tkinter for loading and running BasicML programs.
+This is the third prototype of the project, which includes a color customizable graphical user interface (GUI) with tkinter for loading and running BasicML programs.

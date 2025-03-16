@@ -1,4 +1,4 @@
-# Milestone3
+# Milestone4
 
 ## Description
 A simulator where computer science students can execute their BasicML programs, providing a graphical interface to load and run BasicML files.
@@ -51,4 +51,4 @@ python3 -m tests.testUVSim
 Sarah Maia, Alan Hernandez, Jalal Khan, Santos Laprida
 
 ## Additional Notes
-This is the third prototype of the project, which includes a color customizable graphical user interface (GUI) with tkinter for loading and running BasicML programs.
+This is the third prototype of the project, which includes a color-customizable graphical user interface (GUI) with tkinter for loading and running BasicML programs.

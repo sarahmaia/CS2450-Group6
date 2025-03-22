@@ -25,14 +25,23 @@ cd GroupProject
 Run the program:
 
 ```bash
-python3 -m src.Milestone3.gui.gui
+python3 -m src.Milestone4.gui.gui
 ```
+Once the GUI is open:
 
-Once the GUI is open, click the "Load Program" button.
+    Click the "Load Program" button.
 
-Navigate to and select a file with BasicML.
+    Navigate to and select a .txt file containing your BasicML program.
 
-Click "Run" to execute the program and follow the on-screen instructions.
+    Click "Run" to execute the program.
+
+    Follow on-screen prompts for input and monitor output and memory in the interface.
+
+    Use the "Change Colors" button to customize the GUI theme.
+
+    Note: The GUI enforces a limit of 100 instructions and handles syntax errors.
+
+    Note: The the user is allow to modify the instructions panel.
 
 ## Tests
 Navigate to the root project directory:
@@ -46,6 +55,17 @@ Execute the unit tests:
 ```bash
 python3 -m tests.testUVSim
 ```
+## Additional Notes
+
+This is the fourth milestone of the project. It includes:
+
+    A refined, interactive GUI with improved layout and error handling
+
+    Color customization stored in a config file (config.json)
+
+    Program constraints such as instruction limits and error handling for invalid inputs
+
+    Full separation of concerns between GUI and backend logic for easier maintenance and testing
 
 ## Credits
 Sarah Maia, Alan Hernandez, Jalal Khan, Santos Laprida

@@ -113,11 +113,32 @@ class UVSimGUI:
     def load_program(self):
         file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
         if file_path:
-            self.memory_display.delete(1.0, tk.END)  
-            self.uvsim.load_program(file_path)
+            self.memory_display.delete(1.0, tk.END)
+            self.uvsim = UVSim()  
 
-            for index, value in self.uvsim.memory.items():
-                self.memory_display.insert(tk.END, f"{index:02d}: {value}\n") 
+            try:
+                with open(file_path, 'r') as file:
+                    for index, line in enumerate(file):
+                        if index >= 100:
+                            messagebox.showerror("Error", "Program exceeds 100 instruction limit.")
+                            return
+                        
+                        instruction = line.strip()
+                        if instruction == "-99999":
+                            break
+                        if not instruction.lstrip('+-').isdigit():
+                            messagebox.showerror("Error", f"Invalid instruction at line {index + 1}: '{instruction}'")
+                            return
+
+                        self.uvsim.memory[index] = int(instruction)
+
+                # Display memory in the GUI
+                for index, value in self.uvsim.memory.items():
+                    self.memory_display.insert(tk.END, f"{index:02d}: {value}\n")
+
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to load program: {e}")
+
 
     def run_program(self):
         self.running = True

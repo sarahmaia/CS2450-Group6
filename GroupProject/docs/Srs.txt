@@ -1,0 +1,57 @@
+Functional Requirements:
+GUI Memory Display:
+The system displays program instructions in a scrollable memory pane (100 words).
+
+GUI Buttons:
+The GUI will include “Load Program”, “Run”, “Halt”, and “Reset” buttons.
+
+GUI Value Display:
+The GUI will show the accumulator's current value and output value.
+
+Load Program into Memory (prompt user):
+The system will open a file manager and ask the user to navigate to a BasicML file.
+
+Load Program into Memory (obtain .txt file):
+The system must load a BasicML program from a .txt file into memory, starting at address 00.
+
+Execute Program:
+The system must execute the BasicML program line by line, following the stored instructions.
+
+BasicML Parsing (Fetch Instructions):
+The system will fetch instructions from memory.
+
+BasicML Parsing (Decode Instructions):
+The system will decode instructions from memory.
+
+BasicML Parsing (Validate Instructions):
+The system will validate instructions from memory.
+
+Prompt User for Memory Value:
+The system will prompt the user to input a value into a location in memory.
+
+Input User’s Memory Value:
+The system will enter the user input (for memory value) into memory.
+
+Show Error (for invalid memory value input):
+The system will show an “Invalid Input” error if the user does not enter an integer for memory value.
+
+Reset Program:
+The system will clear the memory.
+Halt Execution (from memory):
+The system must stop execution when the HALT instruction is encountered.
+
+Halt Execution (from button):
+The system must stop execution when the “Halt” button is clicked.
+
+Non-Functional Requirements:
+Performance:
+The system must load and execute a BasicML program with up to 100 instructions in under 2 seconds.
+
+Reliability:
+The system should handle exceptions like division by zero and invalid memory access without showing Python error messages.
+
+Scalability:
+The system should be modifiable without deleting existing code (only adding new code).
+
+Robustness:
+The system should be cross-platform, working on Windows, Mac, and Linux.

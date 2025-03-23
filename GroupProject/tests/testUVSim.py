@@ -146,7 +146,8 @@ class TestUVSim(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
 
-# python -m Milestone2.tests.testUVSim
+# python -m tests.testUVSim
+# python -m GroupProject.src\Milestone3.tests.testUVSim
 
 
 

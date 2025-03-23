@@ -12,7 +12,6 @@ def main():
     
     # memory = {}
     uvsim = UVSim()
-
     
     try:
         uvsim.load_program(file_path)

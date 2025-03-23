@@ -4,7 +4,6 @@ class UVSim:
         self.memory = memory if memory is not None else {}
         self.instruction_pointer = 0
 
-
     def load_program(self, file_path):
         try:
             with open(file_path, 'r') as file:

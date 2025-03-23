@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog, colorchooser
 import json
-
 from src.Milestone3.uvsim import UVSim
 
 class UVSimGUI:
@@ -11,11 +10,10 @@ class UVSimGUI:
         master.geometry("900x600")
         self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        # Load color scheme
         self.load_color_scheme()
 
         self.uvsim = UVSim()
-        self.running = False  
+        self.running = False
 
         self.top_frame = tk.Frame(master, pady=10)
         self.top_frame.pack()
@@ -23,15 +21,20 @@ class UVSimGUI:
         self.load_button = tk.Button(self.top_frame, text="Load Program", command=self.load_program)
         self.load_button.pack()
 
+        self.save_button = tk.Button(self.top_frame, text="Save Program", command=self.save_program)
+        self.save_button.pack()
+
+        self.change_colors_button = tk.Button(self.top_frame, text="Change Colors", command=self.change_colors)
+        self.change_colors_button.pack(pady=5)
+
         self.memory_frame = tk.Frame(master, padx=10, pady=10, bg=self.primary_color)
         self.memory_frame.pack(side=tk.LEFT, fill=tk.Y, padx=10)
 
         self.memory_scroll = tk.Scrollbar(self.memory_frame)
         self.memory_scroll.pack(side=tk.RIGHT, fill=tk.Y)
 
-        self.memory_display = tk.Text(self.memory_frame, height=30, width=40, yscrollcommand=self.memory_scroll.set, font=("Arial", 12))
+        self.memory_display = tk.Text(self.memory_frame, height=30, width=40, yscrollcommand=self.memory_scroll.set, font=("Arial", 12), undo=True)
         self.memory_display.pack(side=tk.LEFT, fill=tk.Y)
-
         self.memory_scroll.config(command=self.memory_display.yview)
 
         self.main_frame = tk.Frame(master, padx=20, pady=10, bg=self.primary_color)
@@ -54,25 +57,38 @@ class UVSimGUI:
         self.halt_button.grid(row=1, column=0, padx=5, pady=5)
         self.reset_button.grid(row=1, column=1, padx=5, pady=5)
 
-        # Button to change color scheme
-        self.change_colors_button = tk.Button(self.top_frame, text="Change Colors", command=self.change_colors)
-        self.change_colors_button.pack(pady=5)
+        self.setup_context_menu()
+
+    def setup_context_menu(self):
+        self.context_menu = tk.Menu(self.master, tearoff=0)
+        self.context_menu.add_command(label="Cut", command=lambda: self.memory_display.event_generate("<<Cut>>"))
+        self.context_menu.add_command(label="Copy", command=lambda: self.memory_display.event_generate("<<Copy>>"))
+        self.context_menu.add_command(label="Paste", command=self.safe_paste)
+
+        self.memory_display.bind("<Button-3>", self.show_context_menu)
+
+    def show_context_menu(self, event):
+        self.context_menu.tk_popup(event.x_root, event.y_root)
+
+    def safe_paste(self):
+        content = self.memory_display.get("1.0", tk.END).strip().splitlines()
+        if len(content) >= 100:
+            messagebox.showerror("Error", "Cannot paste: Memory size cannot exceed 100 lines.")
+            return
+        self.memory_display.event_generate("<<Paste>>")
 
     def load_color_scheme(self):
-        """Load the color scheme from a configuration file."""
         try:
             with open("config.json", "r") as file:
                 config = json.load(file)
-                self.primary_color = config.get("primary_color", "#4C721D")  # Default UVU dark green
-                self.secondary_color = config.get("secondary_color", "#FFFFFF") 
+                self.primary_color = config.get("primary_color", "#4C721D")
+                self.secondary_color = config.get("secondary_color", "#FFFFFF")
         except FileNotFoundError:
-            # If config file does not exist, default to UVU color scheme
             self.primary_color = "#4C721D"
             self.secondary_color = "#FFFFFF"
             self.save_color_scheme()
 
     def save_color_scheme(self):
-        """Save the current color scheme to a configuration file."""
         config = {
             "primary_color": self.primary_color,
             "secondary_color": self.secondary_color
@@ -81,52 +97,73 @@ class UVSimGUI:
             json.dump(config, file)
 
     def change_colors(self):
-        """Allow the user to choose a primary and secondary color."""
         color = colorchooser.askcolor(title="Choose Primary Color")[1]
         if color:
             self.primary_color = color
-            self.update_gui_colors()
-
         color = colorchooser.askcolor(title="Choose Secondary Color")[1]
         if color:
             self.secondary_color = color
-            self.update_gui_colors()
-
-        # Save the new colors to the configuration file
+        self.update_gui_colors()
         self.save_color_scheme()
 
     def update_gui_colors(self):
-        """Update the colors of the GUI elements."""
         self.memory_frame.config(bg=self.primary_color)
         self.main_frame.config(bg=self.primary_color)
-
         self.accumulator_label.config(bg=self.primary_color, fg='black')
         self.output_display.config(bg=self.primary_color, fg='black')
-
         self.button_frame.config(bg=self.primary_color)
         self.run_button.config(bg=self.secondary_color)
         self.halt_button.config(bg=self.secondary_color)
         self.reset_button.config(bg=self.secondary_color)
-
         self.memory_display.config(bg=self.secondary_color, fg='black')
 
     def load_program(self):
         file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
         if file_path:
-            self.memory_display.delete(1.0, tk.END)  
-            self.uvsim.load_program(file_path)
+            with open(file_path, 'r') as file:
+                lines = file.readlines()
+            self.memory_display.delete("1.0", tk.END)
+            for index, line in enumerate(lines):
+                if index >= 100:
+                    break
+                instruction = line.strip()
+                if instruction == "-99999":
+                    break
+                self.memory_display.insert(tk.END, f"{index:02d}: {instruction}\n")
 
-            for index, value in self.uvsim.memory.items():
-                self.memory_display.insert(tk.END, f"{index:02d}: {value}\n") 
+    def save_program(self):
+        content = self.memory_display.get("1.0", tk.END).strip().splitlines()
+        if len(content) > 100:
+            messagebox.showerror("Error", "Cannot save: More than 100 lines present.")
+            return
+
+        file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text Files", "*.txt")])
+        if file_path:
+            with open(file_path, 'w') as file:
+                for line in content:
+                    if ':' in line:
+                        _, instr = line.split(":", 1)
+                        file.write(instr.strip() + "\n")
+                file.write("-99999\n")
 
     def run_program(self):
         self.running = True
+        self.uvsim = UVSim()  # Reset simulator with clean state
+        content = self.memory_display.get("1.0", tk.END).strip().splitlines()
+        self.uvsim.memory = {}
+        for line in content:
+            if ':' in line:
+                addr_str, instr_str = line.split(":", 1)
+                addr = int(addr_str.strip())
+                instr = int(instr_str.strip())
+                self.uvsim.memory[addr] = instr
+
         self.execute_next_instruction()
 
     def execute_next_instruction(self):
         if not self.running:
             return
-            
+
         result = self.uvsim.execute()
         if not result:
             self.running = False
@@ -135,48 +172,44 @@ class UVSimGUI:
         operation, address = result
 
         if operation == "read":
-            self.running = False  
+            self.running = False
             self.prompt_user_input(address)
-            return  
-
+            return
         elif operation == "write":
             output_value = self.uvsim.write_output(address)
             self.output_display.config(text=f"Output: {output_value}")
-
         elif operation == "halt":
             self.running = False
             messagebox.showinfo("Info", "Program Halted.")
             return
 
-        self.uvsim.instruction_pointer += 1  
-
+        self.update_gui()
+        self.uvsim.instruction_pointer += 1
         if self.running:
             self.master.after(100, self.execute_next_instruction)
 
     def prompt_user_input(self, address):
         while True:
             user_input = simpledialog.askstring("Input", f"Enter a number for address {address}:")
-            
-            if user_input is None: 
+            if user_input is None:
                 messagebox.showinfo("Info", "Program Halted by User")
                 self.running = False
                 return
-            
-            if user_input.lstrip('-').isdigit():  
-                self.uvsim.memory[address] = int(user_input) 
-                self.uvsim.instruction_pointer += 1  
+            if user_input.lstrip('-').isdigit():
+                self.uvsim.memory[address] = int(user_input)
+                self.uvsim.instruction_pointer += 1
                 self.running = True
                 self.update_gui()
-                self.master.after(100, self.execute_next_instruction) 
-                break  # Exit loop
+                self.master.after(100, self.execute_next_instruction)
+                break
             else:
                 messagebox.showerror("Error", "Invalid input. Enter an integer.")
 
     def update_gui(self):
-        self.memory_display.delete(1.0, tk.END)  
-        for index, value in self.uvsim.memory.items():
-            self.memory_display.insert(tk.END, f"{index:02d}: {value}\n")
-
+        self.memory_display.delete("1.0", tk.END)
+        for index in range(100):
+            val = self.uvsim.memory.get(index, 0)
+            self.memory_display.insert(tk.END, f"{index:02d}: {val}\n")
         self.accumulator_label.config(text=f"Accumulator: {self.uvsim.accumulator}")
 
     def halt_program(self):
@@ -185,8 +218,8 @@ class UVSimGUI:
 
     def reset_program(self):
         self.running = False
-        self.uvsim = UVSim()  
-        self.memory_display.delete(1.0, tk.END)
+        self.uvsim = UVSim()
+        self.memory_display.delete("1.0", tk.END)
         self.accumulator_label.config(text="Accumulator: 0")
         self.output_display.config(text="Output: ")
         messagebox.showinfo("Info", "Program Reset")
@@ -199,7 +232,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     gui = UVSimGUI(root)
     root.mainloop()
-
-
-    # python -m src.Milestone3.gui.gui
-    # from src.Milestone3.uvsim import UVSim

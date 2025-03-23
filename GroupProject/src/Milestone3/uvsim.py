@@ -1,8 +1,9 @@
 class UVSim:
-    def __init__(self):
-        self.accumulator = 0  
-        self.memory = {}  
-        self.instruction_pointer = 0  
+    def __init__(self, memory=None):
+        self.accumulator = 0
+        self.memory = memory if memory is not None else {}
+        self.instruction_pointer = 0
+
 
     def load_program(self, file_path):
         try:

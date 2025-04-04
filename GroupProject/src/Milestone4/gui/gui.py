@@ -133,8 +133,8 @@ class UVSimGUI:
                         self.uvsim.memory[index] = int(instruction)
 
                 # Display memory in the GUI
-                for index, value in self.uvsim.memory.items():
-                    self.memory_display.insert(tk.END, f"{index:02d}: {value}\n")
+                for value in self.uvsim.memory.values():
+                    self.memory_display.insert(tk.END, f"{value}\n")
 
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to load program: {e}")
@@ -195,8 +195,8 @@ class UVSimGUI:
 
     def update_gui(self):
         self.memory_display.delete(1.0, tk.END)  
-        for index, value in self.uvsim.memory.items():
-            self.memory_display.insert(tk.END, f"{index:02d}: {value}\n")
+        for value in self.uvsim.memory.items():
+            self.memory_display.insert(tk.END, f"{value}\n")
 
         self.accumulator_label.config(text=f"Accumulator: {self.uvsim.accumulator}")
 

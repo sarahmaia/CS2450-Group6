@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog, colorchooser
-import json
 from ..uvsim import UVSim
+from ..config import load_color_scheme, save_color_scheme
+import json
 
 
 class UVSimGUI:
@@ -11,7 +12,7 @@ class UVSimGUI:
         master.geometry("900x600")
         self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        self.load_color_scheme()
+        self.primary_color, self.secondary_color = load_color_scheme()
 
         self.uvsim = UVSim()
         self.running = False
@@ -78,25 +79,6 @@ class UVSimGUI:
             return
         self.memory_display.event_generate("<<Paste>>")
 
-    def load_color_scheme(self):
-        try:
-            with open("config.json", "r") as file:
-                config = json.load(file)
-                self.primary_color = config.get("primary_color", "#4C721D")
-                self.secondary_color = config.get("secondary_color", "#FFFFFF")
-        except FileNotFoundError:
-            self.primary_color = "#4C721D"
-            self.secondary_color = "#FFFFFF"
-            self.save_color_scheme()
-
-    def save_color_scheme(self):
-        config = {
-            "primary_color": self.primary_color,
-            "secondary_color": self.secondary_color
-        }
-        with open("config.json", "w") as file:
-            json.dump(config, file)
-
     def change_colors(self):
         color = colorchooser.askcolor(title="Choose Primary Color")[1]
         if color:
@@ -105,7 +87,8 @@ class UVSimGUI:
         if color:
             self.secondary_color = color
         self.update_gui_colors()
-        self.save_color_scheme()
+        save_color_scheme(self.primary_color, self.secondary_color)
+
 
     def update_gui_colors(self):
         self.memory_frame.config(bg=self.primary_color)

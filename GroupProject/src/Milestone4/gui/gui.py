@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog, colorchooser
 import json
-from src.Milestone3.uvsim import UVSim
+from ..uvsim import UVSim
+
 
 class UVSimGUI:
     def __init__(self, master):

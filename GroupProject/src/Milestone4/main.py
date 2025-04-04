@@ -10,8 +10,8 @@ def main():
         print(f"Error: The file '{file_path}' does not exist.")
         return
     
-    memory = {}
-    uvsim = UVSim(memory)
+    # memory = {}
+    uvsim = UVSim()
     
     try:
         uvsim.load_program(file_path)

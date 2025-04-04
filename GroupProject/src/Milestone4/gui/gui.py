@@ -122,29 +122,48 @@ class UVSimGUI:
         if file_path:
             with open(file_path, 'r') as file:
                 lines = file.readlines()
+
             self.memory_display.delete("1.0", tk.END)
+            self.uvsim = UVSim()
+
             for index, line in enumerate(lines):
                 if index >= 100:
                     break
                 instruction = line.strip()
                 if instruction == "-99999":
                     break
-                self.memory_display.insert(tk.END, f"{instruction}\n")
+                if not instruction.lstrip('+-').isdigit():
+                    messagebox.showerror("Error", f"Invalid instruction at line {index + 1}: '{instruction}'")
+                    return
+
+                value = int(instruction)
+                self.uvsim.memory[index] = value
+                binary_val = format(value if value >= 0 else (1 << 16) + value, '016b')
+                self.memory_display.insert(tk.END, f"{binary_val}\n")
+
 
     def save_program(self):
         content = self.memory_display.get("1.0", tk.END).strip().splitlines()
+        
         if len(content) > 100:
             messagebox.showerror("Error", "Cannot save: More than 100 lines present.")
             return
 
         file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text Files", "*.txt")])
         if file_path:
-            with open(file_path, 'w') as file:
-                for line in content:
-                    if ':' in line:
-                        _, instr = line.split(":", 1)
-                        file.write(instr.strip() + "\n")
-                file.write("-99999\n")
+            try:
+                with open(file_path, 'w') as file:
+                    for index, line in enumerate(content):
+                        binary_line = line.strip()
+                        # Validate it's a binary number
+                        if not all(char in '01' for char in binary_line):
+                            messagebox.showerror("Error", f"Invalid binary on line {index + 1}: '{binary_line}'")
+                            return
+                        file.write(f"{binary_line}\n")
+                    file.write("-99999\n")
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to save file: {e}")
+
 
     def run_program(self):
         self.running = True
@@ -153,9 +172,9 @@ class UVSimGUI:
         self.uvsim.memory = {}
         for index, line in enumerate(content):
             if line.strip():
-                self.uvsim.memory[index] = int(line.strip())
-
-                self.execute_next_instruction()
+                self.uvsim.memory[index] = int(line.strip(), 2)
+        # Execute next instruction after the for loop
+        self.execute_next_instruction()
 
     def execute_next_instruction(self):
         if not self.running:
@@ -205,8 +224,9 @@ class UVSimGUI:
     def update_gui(self):
         self.memory_display.delete("1.0", tk.END)
         for val in self.uvsim.memory.values():
-            self.memory_display.insert(tk.END, f"{val}\n")
-        self.accumulator_label.config(text=f"Accumulator: {self.uvsim.accumulator}")
+            binary_val = format(val if val >= 0 else (1 << 16) + val, '016b')
+            self.memory_display.insert(tk.END, f"{binary_val}\n")
+        self.accumulator_label.config(text=f"Accumulator: {format(self.uvsim.accumulator if self.uvsim.accumulator >= 0 else (1 << 16) + self.uvsim.accumulator, '016b')}")
 
     def halt_program(self):
         self.running = False

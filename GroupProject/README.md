@@ -26,6 +26,7 @@ Run the program:
 
 ```bash
 python3 -m src.Milestone4.gui.gui
+python -m src.Milestone4.gui.gui
 ```
 Once the GUI is open:
 

@@ -129,7 +129,7 @@ class UVSimGUI:
                 instruction = line.strip()
                 if instruction == "-99999":
                     break
-                self.memory_display.insert(tk.END, f"{index:02d}: {instruction}\n")
+                self.memory_display.insert(tk.END, f"{instruction}\n")
 
     def save_program(self):
         content = self.memory_display.get("1.0", tk.END).strip().splitlines()
@@ -151,14 +151,11 @@ class UVSimGUI:
         self.uvsim = UVSim()  # Reset simulator with clean state
         content = self.memory_display.get("1.0", tk.END).strip().splitlines()
         self.uvsim.memory = {}
-        for line in content:
-            if ':' in line:
-                addr_str, instr_str = line.split(":", 1)
-                addr = int(addr_str.strip())
-                instr = int(instr_str.strip())
-                self.uvsim.memory[addr] = instr
+        for index, line in enumerate(content):
+            if line.strip():
+                self.uvsim.memory[index] = int(line.strip())
 
-        self.execute_next_instruction()
+                self.execute_next_instruction()
 
     def execute_next_instruction(self):
         if not self.running:
@@ -207,9 +204,8 @@ class UVSimGUI:
 
     def update_gui(self):
         self.memory_display.delete("1.0", tk.END)
-        for index in range(100):
-            val = self.uvsim.memory.get(index, 0)
-            self.memory_display.insert(tk.END, f"{index:02d}: {val}\n")
+        for val in self.uvsim.memory.values():
+            self.memory_display.insert(tk.END, f"{val}\n")
         self.accumulator_label.config(text=f"Accumulator: {self.uvsim.accumulator}")
 
     def halt_program(self):

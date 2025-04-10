@@ -186,7 +186,7 @@ class UVSimGUI:
         self.update_gui()
         self.uvsim.instruction_pointer += 1
         if self.running:
-            self.master.after(100, self.execute_next_instruction)
+            self.master.after(250, self.execute_next_instruction)
 
     def prompt_user_input(self, address):
         while True:
@@ -200,7 +200,7 @@ class UVSimGUI:
                 self.uvsim.instruction_pointer += 1
                 self.running = True
                 self.update_gui()
-                self.master.after(100, self.execute_next_instruction)
+                self.master.after(250, self.execute_next_instruction)
                 break
             else:
                 messagebox.showerror("Error", "Invalid input. Enter an integer.")

@@ -25,7 +25,7 @@ class UVSim:
             instruction = self.memory[self.instruction_pointer]
             
             len_word = len(str(abs(instruction)))  # abs() handles negative numbers
-            if 2*(len_divisor-1) != len_word:
+            if (len_divisor+1) != len_word:
                 raise ValueError("Incorrect file format. (Words do not have appropriate length.)")
             
             opcode = instruction // self.DIVISOR

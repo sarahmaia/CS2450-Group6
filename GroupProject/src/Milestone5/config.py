@@ -18,3 +18,13 @@ def save_color_scheme(primary_color, secondary_color):
     }
     with open(CONFIG_FILE, "w") as file:
         json.dump(config, file)
+
+def get_format_type(lines):
+    for line in lines:
+        line = line.strip()
+        if line and line != "-99999":
+            if not line.lstrip('+-').isdigit():
+                return "Invalid instruction"
+            word_length = len(line.lstrip('+-'))
+            program_format = 'new' if word_length == 6 else 'old'
+            return program_format

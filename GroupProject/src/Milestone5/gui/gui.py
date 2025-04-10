@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog, colorchooser
 from ..uvsim import UVSim, UVSim_new
-from ..config import load_color_scheme, save_color_scheme
+from ..config import load_color_scheme, save_color_scheme, get_format_type
 import json
 
 
@@ -108,7 +108,15 @@ class UVSimGUI:
                 lines = file.readlines()
 
             self.memory_display.delete("1.0", tk.END)
-            self.uvsim = UVSim()
+            
+            page_format = get_format_type(lines)
+            if page_format == "Invalid instruction":
+                messagebox.showerror("Error Invalid instruction")
+                return
+            if page_format == "new":
+                self.uvsim = UVSim_new()
+            else:
+                self.uvsim = UVSim()
 
             for index, line in enumerate(lines):
                 if index >= 250:
@@ -151,7 +159,7 @@ class UVSimGUI:
 
     def run_program(self):
         self.running = True
-        self.uvsim = UVSim()  # Reset simulator with clean state
+        self.uvsim = type(self.uvsim)()
         content = self.memory_display.get("1.0", tk.END).strip().splitlines()
         self.uvsim.memory = {}
         for index, line in enumerate(content):
@@ -218,7 +226,7 @@ class UVSimGUI:
 
     def reset_program(self):
         self.running = False
-        self.uvsim = UVSim()
+        self.uvsim = type(self.uvsim)()
         self.memory_display.delete("1.0", tk.END)
         self.accumulator_label.config(text="Accumulator: 0")
         self.output_display.config(text="Output: ")

@@ -1,9 +1,10 @@
 Functional Requirements:
 GUI Memory Display:
-The system displays program instructions in a scrollable memory pane (100 words).
+The system displays program instructions in a scrollable memory pane (250 wrds).
+Line numbers are removed, and instructions are shown in binary format.
 
 GUI Buttons:
-The GUI will include “Load Program”, “Run”, “Halt”, and “Reset” buttons.
+The GUI will include “Load Program”, "Save Program", “Run”, “Halt”, and “Reset” buttons.
 
 GUI Value Display:
 The GUI will show the accumulator's current value and output value.
@@ -13,6 +14,21 @@ The system will open a file manager and ask the user to navigate to a BasicML fi
 
 Load Program into Memory (obtain .txt file):
 The system must load a BasicML program from a .txt file into memory, starting at address 00.
+
+Multiple Tabs
+The system supports adding multiple tabs, each with a separate instance of a BasicML program.
+Each tab runs independently and can load, run, halt, save, and or reset its program without affecting others.
+
+GUI Color Customization
+The system allows users to customize primary and secondary GUI colors using a color picker.
+Color choices are persisted across sessions using config.json.
+
+Format Detection
+When loading a program, the system automatically detects whether the instructions are in 4-digit or 6-digit format and selects the appropriate simulation engine (UVSim or UVSim_new).
+
+Instruction Validation
+Both 4-digit and 6-digit instructions are validated before execution.
+If a file contains an invalid instruction format, the user is shown an error dialog
 
 Execute Program:
 The system must execute the BasicML program line by line, following the stored instructions.
@@ -45,13 +61,13 @@ The system must stop execution when the “Halt” button is clicked.
 
 Non-Functional Requirements:
 Performance:
-The system must load and execute a BasicML program with up to 100 instructions in under 2 seconds.
+The system must load and execute a program with up to 250 instructions in under 2 seconds.
 
 Reliability:
 The system should handle exceptions like division by zero and invalid memory access without showing Python error messages.
 
 Scalability:
-The system should be modifiable without deleting existing code (only adding new code).
+The new tab-based architecture and class-based separation (e.g., UVSimTab) enable easy future additions (e.g., features per tab).
 
 Robustness:
 The system should be cross-platform, working on Windows, Mac, and Linux.

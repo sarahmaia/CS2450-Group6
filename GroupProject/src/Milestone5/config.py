@@ -7,7 +7,7 @@ def load_color_scheme():
     try:
         with open(CONFIG_FILE, "r") as file:
             config = json.load(file)
-            return config.get("primary_color", "#4C721D"), config.get("secondary_color", "#FFFFFF")
+            return config.get("primary_color", "#D3D3D3"), config.get("secondary_color", "#F5F5F5")
     except FileNotFoundError:
         return "#4C721D", "#FFFFFF"
 

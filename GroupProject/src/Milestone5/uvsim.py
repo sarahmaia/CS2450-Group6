@@ -3,7 +3,7 @@ class UVSim:
         self.accumulator = 0
         self.memory = memory if memory is not None else {}
         self.instruction_pointer = 0
-        self.DIVISOR = 100  # Words of length 4
+        self.DIVISOR = 100  
 
     def load_program(self, file_path):
         try:
@@ -19,21 +19,19 @@ class UVSim:
             raise ValueError("Invalid instruction format.")
 
     def execute(self):
-        len_divisor = len(str(abs(self.DIVISOR)))
-        
+        valid_opcodes = {10, 11, 20, 21, 30, 31, 32, 33, 40, 41, 42, 43}
         while self.instruction_pointer < len(self.memory):
             instruction = self.memory[self.instruction_pointer]
-            
-            len_word = len(str(abs(instruction)))  # abs() handles negative numbers
-            if (len_divisor+1) != len_word:
-                raise ValueError("Incorrect file format. (Words do not have appropriate length.)")
-            
             opcode = instruction // self.DIVISOR
             operand = instruction % self.DIVISOR
-
-            if opcode == 10:  
+            print(f"IP: {self.instruction_pointer}, Instruction: {instruction}, Opcode: {opcode}, Operand: {operand}")  # Debug
+            if opcode not in valid_opcodes:
+                print(f"Invalid opcode {opcode} at address {self.instruction_pointer}")
+                self.instruction_pointer += 1
+                continue
+            if opcode == 10:
                 return ("read", operand)
-            elif opcode == 11:  
+            elif opcode == 11:
                 return ("write", operand)
             elif opcode == 20:
                 self.load(operand)
@@ -54,11 +52,9 @@ class UVSim:
             elif opcode == 42:
                 self.branchzero(operand)
             elif opcode == 43:
-                return ("halt", None)  # Stop execution
-
+                return ("halt", None)
             self.instruction_pointer += 1
-
-        return None  
+        return ("halt", None)
 
     def read_input(self, address, value):
         self.memory[address] = int(value)

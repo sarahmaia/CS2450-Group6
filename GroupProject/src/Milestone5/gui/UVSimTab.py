@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog
 from ..uvsim import UVSim
 
+import re
+
 class UVSimTab:
     def __init__(self, master, primary_color, secondary_color):
         self.master = master
@@ -42,6 +44,9 @@ class UVSimTab:
             with open(file_path, 'r') as file:
                 lines = file.readlines()
 
+            if len(lines) > 250:
+                messagebox.showwarning("Warning", "File contains more than 250 lines.\nOnly the first 250 lines will be loaded.")
+
             self.memory_display.delete("1.0", tk.END)
 
             from ..config import get_format_type  # import at top if not already
@@ -59,11 +64,15 @@ class UVSimTab:
             for index, line in enumerate(lines):
                 if index >= 250:
                     break
-                instruction = line.strip()
+                instruction = line.strip().replace(" ", "")
+
+                if instruction == "":
+                    continue
+
                 if instruction == "-99999":
                     break
-                if not instruction.lstrip('+-').isdigit():
-                    messagebox.showerror("Error", f"Invalid instruction at line {index + 1}: '{instruction}'")
+                if not re.fullmatch(r"[+-]?\d{4}([0-9]{2})?", instruction):
+                    messagebox.showerror("Error", f"Invalid instruction format at line {index + 1}: '{instruction}'")
                     return
 
                 value = int(instruction)
@@ -142,7 +151,6 @@ class UVSimTab:
             return
 
         self.update_gui()
-        self.uvsim.instruction_pointer += 1
         if self.running:
             self.master.after(250, self.execute_next_instruction)
 

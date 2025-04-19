@@ -33,6 +33,7 @@ Run the program:
 
 ```bash
 python3 -m src.Milestone5.gui.gui
+python -m src.Milestone5.gui.gui
 
 Once the GUI is open:
 

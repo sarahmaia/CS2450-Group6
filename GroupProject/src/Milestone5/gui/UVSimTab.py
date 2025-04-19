@@ -1,13 +1,13 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog
-from ..uvsim import UVSim
+from ..uvsim import UVSim, UVSim_new
 
 import re
 
 class UVSimTab:
-    def __init__(self, master, primary_color, secondary_color):
+    def __init__(self, master, primary_color, secondary_color, use_new_format=False):
         self.master = master
-        self.uvsim = UVSim()
+        self.uvsim = UVSim_new() if use_new_format else UVSim()
         self.running = False
         self.primary_color = primary_color
         self.secondary_color = secondary_color
@@ -37,6 +37,9 @@ class UVSimTab:
         self.run_button.grid(row=0, column=2, padx=5, pady=5)
         self.halt_button.grid(row=0, column=3, padx=5, pady=5)
         self.reset_button.grid(row=0, column=4, padx=5, pady=5)
+        self.check_button = tk.Button(self.button_frame, text="Check Syntax", width=12, command=self.check_syntax, bg=self.secondary_color)
+        self.check_button.grid(row=1, column=2, padx=5, pady=5)
+
 
     def load_program(self):
         file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
@@ -49,36 +52,27 @@ class UVSimTab:
 
             self.memory_display.delete("1.0", tk.END)
 
-            from ..config import get_format_type  # import at top if not already
-            page_format = get_format_type(lines)
-            if page_format == "Invalid instruction":
-                messagebox.showerror("Error", "Invalid instruction format")
-                return
-            if page_format == "new":
-                from ..uvsim import UVSim_new
-                self.uvsim = UVSim_new()
-            else:
-                from ..uvsim import UVSim
-                self.uvsim = UVSim()
-
             for index, line in enumerate(lines):
                 if index >= 250:
                     break
-                instruction = line.strip().replace(" ", "")
 
+                instruction = line.strip().replace(" ", "")
                 if instruction == "":
                     continue
-
                 if instruction == "-99999":
                     break
-                if not re.fullmatch(r"[+-]?\d{4}([0-9]{2})?", instruction):
-                    messagebox.showerror("Error", f"Invalid instruction format at line {index + 1}: '{instruction}'")
+
+                expected_digits = 6 if isinstance(self.uvsim, UVSim_new) else 4
+                if not re.fullmatch(rf"[+-]?\d{{{expected_digits}}}", instruction):
+                    messagebox.showerror("Error", f"Expected {expected_digits}-digit instruction at line {index + 1}: '{instruction}'")
                     return
+
 
                 value = int(instruction)
                 self.uvsim.memory[index] = value
                 binary_val = format(value if value >= 0 else (1 << 16) + value, '016b')
                 self.memory_display.insert(tk.END, f"{binary_val}\n")
+
 
     def save_program(self):
         content = self.memory_display.get("1.0", tk.END).strip().splitlines()
@@ -212,6 +206,36 @@ class UVSimTab:
 
     def show_context_menu(self, event):
         self.context_menu.tk_popup(event.x_root, event.y_root)
+
+    def check_syntax(self):
+        self.memory_display.tag_remove("error", "1.0", tk.END)
+        self.memory_display.tag_config("error", background="red")
+
+        lines = self.memory_display.get("1.0", tk.END).strip().splitlines()
+        errors = []
+
+        for idx, line in enumerate(lines):
+            line_clean = line.strip()
+            is_valid = False
+
+            if line_clean:
+                if line_clean.lstrip("+-").isdigit() and len(line_clean) in [4, 6]:
+                    is_valid = True
+                elif all(c in "01" for c in line_clean) and len(line_clean) == 16:
+                    is_valid = True
+
+            if not is_valid:
+                line_start = f"{idx+1}.0"
+                line_end = f"{idx+1}.end"
+                self.memory_display.tag_add("error", line_start, line_end)
+                errors.append(idx + 1)
+
+        if errors:
+            messagebox.showerror("Syntax Error", f"Invalid instructions found on lines: {', '.join(map(str, errors))}")
+        else:
+            messagebox.showinfo("Syntax Check", "No syntax errors found.")
+
+
 
     def safe_paste(self):
         content = self.memory_display.get("1.0", tk.END).strip().splitlines()

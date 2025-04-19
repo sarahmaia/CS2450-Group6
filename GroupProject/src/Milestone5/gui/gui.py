@@ -31,14 +31,16 @@ class UVSimGUI:
 
         self.notebook = ttk.Notebook(master)
         self.notebook.pack(fill=tk.BOTH, expand=True)
-
-        self.add_tab()  
     
     def add_tab(self):
-        new_tab = UVSimTab(self.master, self.primary_color, self.secondary_color)
+        choice = messagebox.askquestion("Choose Format", "Use 6-digit word format?", icon='question')
+        use_new_format = choice == "yes"
+
+        new_tab = UVSimTab(self.master, self.primary_color, self.secondary_color, use_new_format)
         self.tabs.append(new_tab)
         self.notebook.add(new_tab.frame, text=f"Program {len(self.tabs)}")
         self.notebook.select(len(self.tabs) - 1)
+
 
     def change_colors(self):
         primary = colorchooser.askcolor(title="Choose Primary Color")[1]

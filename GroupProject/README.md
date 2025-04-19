@@ -14,7 +14,9 @@ git clone https://github.com/sarahmaia/CS2450-Group6.git
 This project contains multiple branches:
 
 main: Base branch with milestone progress
+
 Alan: Contains the tabbed GUI implementation for running multiple programs simultaneously. However, it does not support all of the requirements for Milestone 5.
+
 test: Most up-to-date and feature-complete branch. Use this for running and testing the program.
 
 ## Installation
@@ -38,23 +40,23 @@ python -m src.Milestone5.gui.gui
 
 Once the GUI is open:
 
-    Click the "New Tab" button and choose a file type.
+Click the "New Tab" button and choose a file type.
 
-    Click the "Load Program" button.
+Click the "Load Program" button.
 
-    Navigate to and select a .txt file containing your BasicML program.
+Navigate to and select a .txt file containing your BasicML program.
 
-    Click "Run" to execute the program.
+Click "Run" to execute the program.
 
-    Follow on-screen prompts for input and monitor output and memory in the interface.
+Follow on-screen prompts for input and monitor output and memory in the interface.
 
-    Use the "Change Colors" button to customize the GUI color scheme.
+Use the "Change Colors" button to customize the GUI color scheme.
 
-    Note: The GUI enforces a limit of 250 instructions and handles syntax errors.
+Note: The GUI enforces a limit of 250 instructions and handles syntax errors.
 
-    Note: The user is allowed to modify the instructions panel.
+Note: The user is allowed to modify the instructions panel.
 
-    Note: The user is allowed to add more than one program, select the "New Tab" button to add a new tab where a new program can be loaded without loosing the previous loaded program in the other tabs.
+Note: The user is allowed to add more than one program, select the "New Tab" button to add a new tab where a new program can be loaded without loosing the previous loaded program in the other tabs.
 
 ## Tests
 Navigate to the root project directory:
@@ -75,18 +77,18 @@ Sarah Maia, Alan Hernandez, Jalal Khan, Santos Laprida
 ## Additional Notes
 This is milestone number five of the project. It includes:
 
-    A refined, interactive GUI with improved layout and error handling
+A refined, interactive GUI with improved layout and error handling
 
-    Color customization stored in a config file (config.json)
+Color customization stored in a config file (config.json)
 
-    Program constraints such as instruction limits and error handling for invalid inputs
+Program constraints such as instruction limits and error handling for invalid inputs
 
-    Full separation of concerns between GUI and backend logic for easier maintenance and testing
+Full separation of concerns between GUI and backend logic for easier maintenance and testing
 
-    Instruction display is in binary format but the output is displayd in decimal
+Instruction display is in binary format but the output is displayd in decimal
 
-    Line numbers are removed from the instruction panel
+Line numbers are removed from the instruction panel
 
-    250 lines supported
+250 lines supported
 
-    program with 4 digit and 6 digit words are supported
+program with 4 digit and 6 digit words are supported

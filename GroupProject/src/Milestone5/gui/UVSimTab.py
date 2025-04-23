@@ -165,8 +165,7 @@ class UVSimTab:
         for val in self.uvsim.memory.values():
             binary_val = format(val if val >= 0 else (1 << 16) + val, '016b')
             self.memory_display.insert(tk.END, f"{binary_val}\n")
-        self.accumulator_label.config(text=f"Accumulator: {format(self.uvsim.accumulator if self.uvsim.accumulator >= 0 else (1 << 16) + 
-                                                                  self.uvsim.accumulator, '016b')}")
+        self.accumulator_label.config(text=f"Accumulator: {format(self.uvsim.accumulator if self.uvsim.accumulator >= 0 else (1 << 16) + self.uvsim.accumulator, '016b')}")
 
     def prompt_user_input(self, address):
         while True:
